@@ -19,7 +19,9 @@ package day02;
  */
 public class Test01 {
 	public static void main(String[] args) {
-		
+		String str = "adfasd15646afafdadf1af54fad4ad5adf6";
+		String regex = "[0-9]+";
+		System.out.println();
 	}
 }
 
