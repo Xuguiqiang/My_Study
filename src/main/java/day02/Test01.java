@@ -1,6 +1,7 @@
 package day02;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 /**
  * 正则表达式练习:
@@ -26,6 +27,29 @@ public class Test01 {
 		String regex = "[0-9]+";  /**  从0到9的多个数字  */
 		String[] ch = str.split(regex);  /**   从给定的字符串中拆分全部数字   */
 		System.out.println(Arrays.toString(ch));
+
+		/**
+		 *    匹配字符串,要求输入3-15位,内容只能是数字,字母下,划线
+		 * */
+		Scanner scan = new Scanner(System.in);
+		System.out.print("请输入字符串：");
+		String s = scan.next();
+		String regex1 = "[a-z0-9_]+";
+		while (true){
+			if (s.equals("t")){
+				break;
+			}else{
+				if (s.matches(regex1)){
+					System.out.println("符合要求！");
+					System.out.print("继续验证请继续，只能是字母数字下划线，退出输入t:");
+					s = scan.next();
+				}else{
+					System.out.println("不符合要求！");
+					System.out.print("继续验证请继续，只能是字母数字下划线，退出输入t:");
+					s = scan.next();
+				}
+			}
+		}
 	}
 }
 
