@@ -1,4 +1,7 @@
 package day02;
+
+import java.util.Arrays;
+
 /**
  * 正则表达式练习:
  * 1:编写匹配数字的正则表达式,数字至少一位以上.
@@ -20,8 +23,9 @@ package day02;
 public class Test01 {
 	public static void main(String[] args) {
 		String str = "adfasd15646afafdadf1af54fad4ad5adf6";
-		String regex = "[0-9]+";
-		System.out.println();
+		String regex = "[0-9]+";  /**  从0到9的多个数字  */
+		String[] ch = str.split(regex);  /**   从给定的字符串中拆分全部数字   */
+		System.out.println(Arrays.toString(ch));
 	}
 }
 
