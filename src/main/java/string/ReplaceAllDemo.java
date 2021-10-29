@@ -12,7 +12,7 @@ public class ReplaceAllDemo {
         String str = "aadffads15fad4adf2ffadsf54156afd1fads";
 
         /**  按 regex 将字符串str按正则表达式的匹配规则进行替换   */
-        str = str.replaceAll("[0-9]","数字");
+        str = str.replaceAll("[0-9]+","数字");
         System.out.println(str);
     }
 }
