@@ -29,5 +29,9 @@ public class SplitDemo {
         for (int i = 0; i< data.length; i++){
             System.out.print("第"+(i+1)+"个字符串："+data[i]+"\t");
         }
+
+        String str1 = "abcd156afsf852adf465a2d5d4d6";
+        String[] str2 = str1.split("[0-9]+");
+        System.out.println(Arrays.toString(str2));
     }
 }

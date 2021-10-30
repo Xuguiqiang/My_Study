@@ -14,5 +14,9 @@ public class ReplaceAllDemo {
         /**  按 regex 将字符串str按正则表达式的匹配规则进行替换   */
         str = str.replaceAll("[0-9]","数字");
         System.out.println(str);
+
+        String str1 = "abcdefg123456.a14b";
+        str1 = str1.replaceAll("[a-z]+","K");
+        System.out.println(str1);
     }
 }

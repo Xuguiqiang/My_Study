@@ -39,7 +39,7 @@ public class Test01 {
 			if (s.equals("t")){
 				break;
 			}else{
-				if (s.matches(regex1)){
+				if (s.matches(regex1) && s.length()>=3){
 					System.out.println("符合要求！");
 					System.out.print("继续验证请继续，只能是字母数字下划线，退出输入t:");
 					s = scan.next();

@@ -11,7 +11,7 @@ public class Demo {
     public static void main(String[] args) {
         Point p = new Point(1,2);
         /**
-         *   向控制台输出一个对象时，该方法会输出该对象toString方法返回的字符串,默认为：
+         *   向控制台输出一个对象时，该方法会输出该对象toString方法返回的字符串,默认为：引用的地址
          */
         System.out.println(p);
         System.out.println(p.toString());

@@ -21,7 +21,7 @@ public class IntegerDemo1 {
 
         /**
          *    Java建议用 valueof()方法来包装整形数据
-         *    其值范围是 -128 到 127
+         *    其值范围是 -128 到 127 超过此缓存范围就只能 new Integer(num);
          * */
         Integer i1 = Integer.valueOf(num);     /** 等同于 Integer i1 = new Integer(num); */
         Integer i2 = Integer.valueOf(num);
