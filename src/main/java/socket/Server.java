@@ -47,20 +47,10 @@ public class Server {
         try{
             Socket socket = serverSocket.accept();
             System.out.println("有客户端已经连接！");
-            System.out.println(socket.getLocalAddress());
-            InputStream is = socket.getInputStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(is,"UTF-8"));
-            String message;
-            /**
-             *
-             * 服务端通过缓冲流读取客户端发送过来一行字符串的操作时，这个方法会产生阻塞，等待对方发送消息，直到对方发送过来一行字符串则该方法返回此行内容
-             * 当客户端调用socket.close()断开连接，那么这里readLine方法会返回null ,表示读取到了末尾（对方断了连接）。
-             * 如果客户端意外中断（强行关闭，停电，断网等）那么服务端这边的readline方法会抛出异常
-             *
-             * */
-            while ((message = br.readLine()) != null){
-                System.out.println("客户端说："+message);
-            }
+            /**  启动一个线程来与客户端进行交互  */
+            ClientHandler handler = new ClientHandler(socket);
+            Thread t1 = new Thread(handler);
+            t1.start();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -71,5 +61,35 @@ public class Server {
     public static void main(String[] args) {
         Server server = new Server();
         server.start();
+    }
+
+    private class ClientHandler implements Runnable{
+        /**  该线程任务用于与指定的客户端进行交互  */
+        private Socket socket;
+        private String host; //客户端的地址信息
+        public ClientHandler(Socket socket){
+            this.socket = socket;
+            this.host = socket.getInetAddress().getHostAddress();
+        }
+        @Override
+        public void run() {
+            try{
+                InputStream is = socket.getInputStream();
+                BufferedReader br = new BufferedReader(new InputStreamReader(is,"UTF-8"));
+                String message;
+                /**
+                 *
+                 * 服务端通过缓冲流读取客户端发送过来一行字符串的操作时，这个方法会产生阻塞，等待对方发送消息，直到对方发送过来一行字符串则该方法返回此行内容
+                 * 当客户端调用socket.close()断开连接，那么这里readLine方法会返回null ,表示读取到了末尾（对方断了连接）。
+                 * 如果客户端意外中断（强行关闭，停电，断网等）那么服务端这边的readline方法会抛出异常
+                 *
+                 * */
+                while ((message = br.readLine()) != null){
+                    System.out.println(host+"说："+message);
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
     }
 }

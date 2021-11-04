@@ -1,4 +1,4 @@
-package socket;
+package any_test.socket1;
 
 import java.io.*;
 import java.net.Socket;
@@ -6,33 +6,27 @@ import java.util.Scanner;
 
 /**
  * @author Xgq
- * @date 2021/11/315:58
+ * @date 2021/11/419:50
  * @Title Client
- * @Package Socket
- * @Description
- *
- *    聊天室客户端
- *    java.net.Socket 套接字
- *    Socket封装了TCP协议的通讯细节，使用它可以与远端计算机建立连接，并基于一个输入与输出流的读写完成与远端计算机的交互
- *
+ * @Package API Socket
+ * @Description client 客户端
  */
 public class Client {
     private Socket socket;
     public Client() {
-        /**  初始化客户端  new Socket ->  host:本机 port: 端口  */
+        System.out.println("正在连接到服务端...");
         try {
-            System.out.println("正在连接服务器...");
-            socket = new Socket("jsd.nat123.cc",12306);
-            System.out.println("与服务器端连接成功!");
+            socket = new Socket("localhost",12307);
+            System.out.println("已经与服务端建立了连接!");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     public void start(){
-        /**  客户端开始工作的方法 start()  */
         try(
-                OutputStream out = socket.getOutputStream();
-                PrintWriter pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(out,"UTF-8")),true);
+                OutputStream os = socket.getOutputStream();
+                PrintWriter pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(os,"UTF-8")),true);
                 ){
             Scanner scan = new Scanner(System.in);
             while (true){
@@ -42,7 +36,7 @@ public class Client {
                 }
                 pw.println(line);
             }
-        } catch (IOException e) {
+        }catch (Exception e){
             e.printStackTrace();
         }finally {
             try {
