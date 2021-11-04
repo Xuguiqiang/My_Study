@@ -2,6 +2,7 @@ package socket;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Scanner;
 
 /**
  * @author Xgq
@@ -33,9 +34,22 @@ public class Client {
                 OutputStream out = socket.getOutputStream();
                 PrintWriter pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(out,"UTF-8")),true);
                 ){
-            pw.println("你好，Server !");
+            Scanner scan = new Scanner(System.in);
+            while (true){
+                String line = scan.nextLine();
+                if ("exit".equals(line)){
+                    break;
+                }
+                pw.println(line);
+            }
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

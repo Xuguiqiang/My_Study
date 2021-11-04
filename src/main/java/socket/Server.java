@@ -2,10 +2,7 @@ package socket;
 
 import jdk.internal.util.xml.impl.Input;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -39,23 +36,35 @@ public class Server {
         }
     }
     public void start(){
-        try {
-            System.out.println("等待客户端连接....");
-            /**
-             *     ServerSocket 提供的方法
-             *     Socket accept()
-             *     该方法是一个阻塞方法，调用后开始等待客户端的连接，一旦一个客户端连接那么该方法会立即返回一个Socket
-             * */
-            Socket socket = serverSocket.accept();
-            System.out.println("有客户端连接了!");
+        while (true){
+        System.out.println("等待客户端连接....");
+        /**
+         *     ServerSocket 提供的方法
+         *     Socket accept()
+         *     该方法是一个阻塞方法，调用后开始等待客户端的连接，一旦一个客户端连接那么该方法会立即返回一个Socket
+         * */
 
-            InputStream in = socket.getInputStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(in,"UTF-8"));
-            String line = br.readLine();
-            System.out.println(line);
+        try{
+            Socket socket = serverSocket.accept();
+            System.out.println("有客户端已经连接！");
+            System.out.println(socket.getLocalAddress());
+            InputStream is = socket.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is,"UTF-8"));
+            String message;
+            /**
+             *
+             * 服务端通过缓冲流读取客户端发送过来一行字符串的操作时，这个方法会产生阻塞，等待对方发送消息，直到对方发送过来一行字符串则该方法返回此行内容
+             * 当客户端调用socket.close()断开连接，那么这里readLine方法会返回null ,表示读取到了末尾（对方断了连接）。
+             * 如果客户端意外中断（强行关闭，停电，断网等）那么服务端这边的readline方法会抛出异常
+             *
+             * */
+            while ((message = br.readLine()) != null){
+                System.out.println("客户端说："+message);
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
         }
     }
 
