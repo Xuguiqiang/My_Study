@@ -1,6 +1,8 @@
 package day05homework;
 
 import javax.sound.midi.Soundbank;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
@@ -45,10 +47,37 @@ public class Test3 {
         if(name.matches("[0-9a-zA-Z_]{1,32}")){
             System.out.print("请输入pwd:");
             pwd = scan.next();
-            System.out.print("请输入nick:");
-            nick = scan.next();
-            System.out.print("请输入age:");
-            age = scan.nextInt();
+            if(pwd.matches("[a-zA-Z0-9_]{1,32}")){
+                System.out.print("请输入nick:");
+                nick = scan.next();
+                if (!"".equals(nick)){
+                    System.out.print("请输入age:");
+                    age = scan.nextInt();
+                    if (age > 0 && age <= 100){
+                        User user = new User(name,pwd,nick,age);
+                        String obj_name = name+".obj";
+                        try(
+                                FileOutputStream fos = new FileOutputStream(obj_name);
+                                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                                ){
+
+                            oos.writeObject(user);
+                            System.out.println("序列化完成！");
+                        }catch (IOException e){
+                            String mess = e.getMessage();
+                            System.out.println(mess);
+                        }
+                    }else{
+                        System.out.println("age不合法!");
+                    }
+                }else{
+                    System.out.println("nick输入不合法！");
+                }
+
+            }else{
+                System.out.println("PWD输入不合法！");
+            }
+
         }else{
             System.out.println("输入的name不合法！");
         }
