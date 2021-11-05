@@ -19,7 +19,7 @@ public class BOSFlashDemo {
     public static void main(String[] args) throws IOException {
         FileOutputStream fos = new FileOutputStream("./bos.txt",true);
         BufferedOutputStream bos = new BufferedOutputStream(fos);
-        String str = "这年轻人，卧槽！\n";
+        String str = "hello";
         byte[] data = str.getBytes(StandardCharsets.UTF_8);
         bos.write(data);
         /**

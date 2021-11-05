@@ -1,5 +1,7 @@
 package thread;
 
+import java.util.Scanner;
+
 /**
  * @author Xgq
  * @date 2021/11/417:29
@@ -22,8 +24,8 @@ public class SleepDemo {
 //        }
 //
 //        System.out.println("程序结束了！");
-
-        for (int i = 10; i > 0; i--){
+        Scanner scanner = new Scanner(System.in);
+        for (int i = scanner.nextInt(); i > 0; i--){
             System.out.println(i);
             try {
                 Thread.sleep(1000);

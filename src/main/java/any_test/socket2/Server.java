@@ -18,7 +18,7 @@ public class Server {
     private ServerSocket serverSocket;
     public Server() {
         try {
-            serverSocket = new ServerSocket(12307);
+            serverSocket = new ServerSocket(12306);
             System.out.println("服务端已经运行开启运行...");
         } catch (IOException e) {
             e.printStackTrace();
