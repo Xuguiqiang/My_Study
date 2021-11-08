@@ -79,12 +79,6 @@ public class Server {
                     PrintWriter pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8")),true);
                     ){
                 String message;
-
-                /**
-                 *       通过socket获取输出流，用于给客户端回复消息
-                 * */
-
-
                 /**
                  *
                  * 服务端通过缓冲流读取客户端发送过来一行字符串的操作时，这个方法会产生阻塞，等待对方发送消息，直到对方发送过来一行字符串则该方法返回此行内容
