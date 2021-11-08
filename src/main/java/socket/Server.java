@@ -5,6 +5,8 @@ import jdk.internal.util.xml.impl.Input;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
+import java.util.Arrays;
 
 /**
  * @author Xgq
@@ -22,6 +24,7 @@ import java.net.Socket;
  */
 public class Server {
     private ServerSocket serverSocket;
+    private PrintWriter[] allOut = { };
     public Server() {
         try {
             /**
@@ -64,7 +67,7 @@ public class Server {
     }
 
     private class ClientHandler implements Runnable{
-        /**  该线程任务用于与指定的客户端进行交互  */
+        /**  该线程任务用于与所有的客户端进行交互  */
         private Socket socket;
         private String host; //客户端的地址信息
         public ClientHandler(Socket socket){
@@ -78,6 +81,8 @@ public class Server {
                     BufferedReader br = new BufferedReader(new InputStreamReader(is,"UTF-8"));
                     PrintWriter pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8")),true);
                     ){
+                allOut = Arrays.copyOf(allOut,allOut.length+1);
+                allOut[allOut.length-1] = pw;
                 String message;
                 /**
                  *
@@ -87,10 +92,13 @@ public class Server {
                  *
                  * */
                 while ((message = br.readLine()) != null){
-                    pw.println(host+"说："+message);
+                    /**  遍历allOut，将消息回复给所有客户端  */
+                    for (int i = 0; i < allOut.length; i ++){
+                        allOut[i].println(host+"说："+message);
+                    }
                 }
             }catch (IOException e){
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
     }

@@ -1,5 +1,6 @@
 package socket;
 
+import javax.sound.midi.Soundbank;
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
@@ -32,18 +33,17 @@ public class Client {
         /**  客户端开始工作的方法 start()  */
         try(
                 PrintWriter pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8")),true);
-                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
                 ){
             Scanner scan = new Scanner(System.in);
+            ServerHandler serverHandler = new ServerHandler();
+            Thread t = new Thread(serverHandler);
+            t.start();
             while (true){
                 String line = scan.nextLine();
                 if ("exit".equals(line)){
                     break;
                 }
                 pw.println(line);
-
-                line = br.readLine();
-                System.out.println(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -59,5 +59,23 @@ public class Client {
     public static void main(String[] args) {
         Client client = new Client();
         client.start();
+    }
+    /**  该线程用于循环读取服务端发送过来的消息 内部类  */
+    private class ServerHandler implements Runnable{
+
+        @Override
+        public void run() {
+            try(
+                    BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
+                    ) {
+                String message ;
+                while ((message = br.readLine()) != null){
+                    System.out.println(message);
+                }
+
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
     }
 }
