@@ -22,7 +22,7 @@ public class Client {
         /**  初始化客户端  new Socket ->  host:本机 port: 端口  */
         try {
             System.out.println("正在连接服务器...");
-            socket = new Socket("jsd.nat123.cc",12306);
+            socket = new Socket("176.221.14.18",12306);
             System.out.println("与服务器端连接成功!");
         } catch (IOException e) {
             e.printStackTrace();
@@ -31,8 +31,8 @@ public class Client {
     public void start(){
         /**  客户端开始工作的方法 start()  */
         try(
-                OutputStream out = socket.getOutputStream();
-                PrintWriter pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(out,"UTF-8")),true);
+                PrintWriter pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8")),true);
+                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
                 ){
             Scanner scan = new Scanner(System.in);
             while (true){
@@ -41,6 +41,9 @@ public class Client {
                     break;
                 }
                 pw.println(line);
+                while ((line = br.readLine())!= null){
+                    System.out.println(line);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
