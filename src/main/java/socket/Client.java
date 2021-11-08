@@ -41,9 +41,9 @@ public class Client {
                     break;
                 }
                 pw.println(line);
-                while ((line = br.readLine())!= null){
-                    System.out.println(line);
-                }
+
+                line = br.readLine();
+                System.out.println(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
