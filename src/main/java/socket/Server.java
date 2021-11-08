@@ -31,16 +31,16 @@ public class Server {
              *     实例化ServerSocket要指定指定服务端口，该端口不能与系统其它应用占用端口相同，否则会抛出异常
              *     java.net.BindException: address already in use　若有该异常换端口，直到没有异常
              * */
-            System.out.println("正在启动服务端...");
+            //System.out.println("正在启动服务端...");
             serverSocket = new ServerSocket(12306);
-            System.out.println("服务端已开启!");
+            //System.out.println("服务端已开启!");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     public void start(){
         while (true){
-        System.out.println("等待客户端连接....");
+        //System.out.println("等待客户端连接....");
         /**
          *     ServerSocket 提供的方法
          *     Socket accept()
@@ -49,7 +49,7 @@ public class Server {
 
         try{
             Socket socket = serverSocket.accept();
-            System.out.println("有客户端已经连接！");
+            //System.out.println("有客户端已经连接！");
             /**  启动一个线程来与客户端进行交互  */
             ClientHandler handler = new ClientHandler(socket);
             Thread t1 = new Thread(handler);
@@ -76,13 +76,15 @@ public class Server {
         }
         @Override
         public void run() {
-            try(
-                    InputStream is = socket.getInputStream();
-                    BufferedReader br = new BufferedReader(new InputStreamReader(is,"UTF-8"));
-                    PrintWriter pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8")),true);
-                    ){
-                allOut = Arrays.copyOf(allOut,allOut.length+1);
-                allOut[allOut.length-1] = pw;
+            PrintWriter pw = null;
+            try{
+                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
+                pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8")),true);
+                synchronized (Server.this){
+                    allOut = Arrays.copyOf(allOut,allOut.length+1);
+                    allOut[allOut.length-1] = pw;
+                }
+                sendMessage(host+"上线了,"+"当前在线人数："+allOut.length);
                 String message;
                 /**
                  *
@@ -93,12 +95,35 @@ public class Server {
                  * */
                 while ((message = br.readLine()) != null){
                     /**  遍历allOut，将消息回复给所有客户端  */
-                    for (int i = 0; i < allOut.length; i ++){
-                        allOut[i].println(host+"说："+message);
-                    }
+                    sendMessage(host+"说："+message);
                 }
             }catch (IOException e){
                 //e.printStackTrace();
+            }finally {
+                //处理客户端断开连接后的操作
+                synchronized (Server.this){
+                    for (int i = 0; i < allOut.length; i ++){
+                        if (allOut[i] == pw){
+                            allOut[i] = allOut[allOut.length-1];
+                            allOut = Arrays.copyOf(allOut,allOut.length-1);
+                            break;
+                        }
+                    }
+                }
+                sendMessage(host+"下线了,"+"当前在线人数："+allOut.length);
+                try {
+                    socket.close(); /**  与客户端断开连接释放资源  */
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        /**   将给定的消息，转发给所有的客户端   */
+        private  void sendMessage(String message){
+            synchronized (Server.this){
+                for (int i = 0; i < allOut.length; i ++){
+                    allOut[i].println(message);
+                }
             }
         }
     }
