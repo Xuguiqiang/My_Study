@@ -12,22 +12,16 @@ import java.util.Date;
  */
 public class Test {
 
-    //    public static void main(String[] args) {
-//        Date date = new Date();
-//        SimpleDateFormat formate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        String str = formate.format(date);
-//        System.out.println(str);
-//    }
+    private String str = "tedu";
     public  void changes(String str,char ch[]){
         str = "tarena";
         ch[0] = 'w';
     }
 
     public static void main(String[] args) {
-        String str = new String("tedu");
         char[] ch = {'x','y','z'};
         Test t = new Test();
-        t.changes(str,ch);
-        System.out.println();
+        t.changes(t.str,ch);
+        System.out.println(t.str+"and");
     }
 }
