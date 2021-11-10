@@ -55,7 +55,7 @@ public class ListDemo1 {
             list.set(j,list.set(i,list.get(j)));
         }
         /**
-         *      Collections.reverse(list);   //实现返回的API 方法
+         *      Collections.reverse(list);   //实现返转的API 方法
          * */
         System.out.println(list);
     }

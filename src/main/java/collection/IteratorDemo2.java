@@ -1,8 +1,6 @@
 package collection;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * @author Xgq
@@ -10,22 +8,19 @@ import java.util.Iterator;
  * @Title IteratorDemo2
  * @Package API Collection Iterator
  * @Description
+ *
+ *     Integer 集合转换为 数组
  */
 public class IteratorDemo2 {
     public static void main(String[] args) {
-        Collection<Integer> c = new ArrayList();
-        c.add(1);
-        c.add(2);
-        c.add(3);
-        c.add(4);
-        c.add(5);
-        System.out.println(c);
-        Iterator<Integer> it = c.iterator();
-        while (it.hasNext()){
-            if (it.next() == 3){
-                it.remove();
-            }
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < 20; i ++){
+            list.add(i);
         }
-        System.out.print(it.next()+"\t");
+        System.out.println(list);
+        Integer[] ints = list.toArray(new Integer[0]);
+        for (int i = 0; i < ints.length; i ++){
+            System.out.println(ints[i]);
+        }
     }
 }
