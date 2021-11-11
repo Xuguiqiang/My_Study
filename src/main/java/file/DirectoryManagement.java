@@ -14,9 +14,10 @@ import java.util.Collection;
  */
 public class DirectoryManagement {
     public static void main(String[] args) {
-        File file = new File("./");
+        File file = new File("./src/main/java/collection/");
         if (file.isDirectory()){
-            System.out.println(file.length());
+            String[] list = file.list();
+            System.out.println(list[1]);
         }
     }
 }
